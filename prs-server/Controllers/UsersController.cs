@@ -41,6 +41,20 @@ namespace prs_server.Controllers
             return user;
         }
 
+        //GET:/api/users/username/password
+        [HttpGet("{username}/{password}")]
+        public async Task<ActionResult<User>> GetUser(string username, string password)
+        {
+            var user = await _context.User.SingleOrDefaultAsync(u => u.Username.Equals(username) && u.Password.Equals(password));
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return user;
+
+        }
+
         // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]

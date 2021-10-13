@@ -14,7 +14,7 @@ namespace prs_server.Models
         public virtual Request Request { get; set; }
         public int ProductId { get; set; }
         public virtual Product Product { get; set; }
-        public int Quantity { get; set; }
+        public int Quantity { get; set; } = 1;
 
         public RequestLine () { }
     }

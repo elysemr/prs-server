@@ -41,6 +41,10 @@ namespace prs_server.Controllers
             return request;
         }
 
+
+        //PUT: api/requests/review
+       
+
         // PUT: api/Requests/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -70,7 +74,29 @@ namespace prs_server.Controllers
             }
 
             return NoContent();
+
         }
+
+       [HttpPut("review")]
+       public async Task<IActionResult> SetRequestToReview(Request request)
+        {
+            request = new Request() { };
+            if(request == null)
+            {
+                return NotFound();
+            }
+            if(request.Total <= 50)
+            {
+                request.Status = "Approved";
+                return await PutRequest(request.Id, request);
+            }
+            else
+            {
+                request.Status = "Review";
+                return await PutRequest(request.Id, request);
+            }
+        }
+
 
         // POST: api/Requests
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
