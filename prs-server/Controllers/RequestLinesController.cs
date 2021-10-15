@@ -41,12 +41,12 @@ namespace prs_server.Controllers
             return requestLine;
         }
 
-        public async Task<IActionResult> RecalculateRequest(int requestId)
+        private async Task<IActionResult> RecalculateRequest(int requestId)
         {
             var request = await _context.Request.FindAsync(requestId);
             if (request == null)
             {
-                BadRequest();
+                return BadRequest();
             }
             request.Total = (from rl in _context.RequestLine
                              join p in _context.Product
@@ -57,10 +57,8 @@ namespace prs_server.Controllers
                                  LineTotal = rl.Quantity * p.Price
                              })
                              .Sum(x => x.LineTotal);
-
-            var requestline = new RequestLine() { };
-            return await PutRequestLine(requestline.Id, requestline);
-
+                await _context.SaveChangesAsync();
+            return Ok();
         }
 
         // PUT: api/RequestLines/5
@@ -78,6 +76,7 @@ namespace prs_server.Controllers
             try
             {
                 await _context.SaveChangesAsync();
+                await RecalculateRequest(requestLine.RequestId);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -90,7 +89,6 @@ namespace prs_server.Controllers
                     throw;
                 }
             }
-
             return NoContent();
         }
 
@@ -101,7 +99,7 @@ namespace prs_server.Controllers
         {
             _context.RequestLine.Add(requestLine);
             await _context.SaveChangesAsync();
-
+            await RecalculateRequest(requestLine.RequestId);
             return CreatedAtAction("GetRequestLine", new { id = requestLine.Id }, requestLine);
         }
 
@@ -117,7 +115,7 @@ namespace prs_server.Controllers
 
             _context.RequestLine.Remove(requestLine);
             await _context.SaveChangesAsync();
-
+            await RecalculateRequest(requestLine.RequestId);
             return NoContent();
         }
 
