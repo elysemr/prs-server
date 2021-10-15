@@ -13,6 +13,7 @@ User - DONE
 
 Request
 most of work will be done here
+
 GetRequests in review method
 	-reads and returns all requests in review status but omits any that are owned by the logged in user
 	-need list of all in review status
@@ -74,6 +75,7 @@ GetRequests in review method
 	-Put method generated that will update requests --instead of rewriting, could use generated and pass our changed request to generated method
 	to let it do its work designed to do
 
+	DONE
 	Request: setrequesttoapproved
 	will set status of a request to approved
 	used by reviewer when approve a request
@@ -84,6 +86,7 @@ GetRequests in review method
 	-use already generated put method
 	-status field set to approved
 
+	DONE
 	Request: setrequesttorejected
 	if reviewer doesn't approve the request, this happens
 	set status of request to rejected
@@ -112,3 +115,7 @@ GetRequests in review method
 	-wrap linq query in parens and call sum() to calculate total
 	-sum is an aggregate method and will req lambda syntax to point to the filed to sum up
 	-only one field in the select clause that can be summed up
+
+
+
+	Method: 

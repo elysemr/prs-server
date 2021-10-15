@@ -41,9 +41,33 @@ namespace prs_server.Controllers
             return request;
         }
 
+        //GET: reviews/UserID
+        //[HttpGet("reviews/{userId}")]
+        //public async Task<ActionResult<IEnumerable<Request>>> GetRequestsInReview(int userId)
+        //{
+        //    var request = new Request() { };
+        //    var requests = await _context.Request.ToListAsync();
+        //    var user = await _context.Request.FindAsync(userId);
+        //    if (request == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    else
+        //   request.Status = (from r in _context.Request
+        //                    where r.Status = "REVIEW"
+        //                    and r.UserId != userId
+        //                    select r);
+
+        //    if (request.Status == "REVIEW" && request.UserId != userId)
+        //    {
+        //        return requests;
+        //    }
+
+        //}
+
 
         //PUT: api/requests/review
-       
+
 
         // PUT: api/Requests/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -76,25 +100,52 @@ namespace prs_server.Controllers
             return NoContent();
 
         }
-
+        // set request to review
        [HttpPut("review")]
        public async Task<IActionResult> SetRequestToReview(Request request)
         {
             request = new Request() { };
+            var review = await _context.Request.ToListAsync();
             if(request == null)
             {
                 return NotFound();
             }
             if(request.Total <= 50)
             {
-                request.Status = "Approved";
+                request.Status = "APPROVED";
                 return await PutRequest(request.Id, request);
             }
             else
             {
-                request.Status = "Review";
+                request.Status = "REVIEW";
                 return await PutRequest(request.Id, request);
             }
+        }
+
+        //set request to approve
+        [HttpPut("approve")]
+        public async Task<IActionResult> SetRequestToApprove(Request request)
+        {
+            request = new Request() { };
+            if(request == null)
+            {
+                return NotFound();
+            }
+            request.Status = "APPROVED";
+            return await PutRequest(request.Id, request);
+        }
+
+        //set request to rejected
+        [HttpPut("reject")]
+        public async Task<IActionResult> SetRequestToRejected(Request request)
+        {
+            request = new Request() { };
+            if(request == null)
+            {
+                return NotFound();
+            }
+            request.Status = "REJECTED";
+            return await PutRequest(request.Id, request);
         }
 
 
