@@ -46,7 +46,7 @@ namespace prs_server.Controllers
             var request = await _context.Request.FindAsync(requestId);
             if (request == null)
             {
-                NotFound();
+                BadRequest();
             }
             request.Total = (from rl in _context.RequestLine
                              join p in _context.Product

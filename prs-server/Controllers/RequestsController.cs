@@ -42,31 +42,16 @@ namespace prs_server.Controllers
         }
 
         //GET: reviews/UserID
-        //[HttpGet("reviews/{userId}")]
-        //public async Task<ActionResult<IEnumerable<Request>>> GetRequestsInReview(int userId)
-        //{
-        //    var request = new Request() { };
-        //    var requests = await _context.Request.ToListAsync();
-        //    var user = await _context.Request.FindAsync(userId);
-        //    if (request == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    else
-        //   request.Status = (from r in _context.Request
-        //                    where r.Status = "REVIEW"
-        //                    and r.UserId != userId
-        //                    select r);
+        [HttpGet("reviews/{userId}")]
+        public async Task<ActionResult<IEnumerable<Request>>> GetRequestsInReview(int userId)
+        {
 
-        //    if (request.Status == "REVIEW" && request.UserId != userId)
-        //    {
-        //        return requests;
-        //    }
+            return await (from r in _context.Request
+                          where r.Status == "REVIEW"
+                          && r.UserId != userId
+                          select r).ToListAsync();
 
-        //}
-
-
-        //PUT: api/requests/review
+        }
 
 
         // PUT: api/Requests/5
@@ -103,33 +88,29 @@ namespace prs_server.Controllers
         // set request to review
        [HttpPut("review")]
        public async Task<IActionResult> SetRequestToReview(Request request)
-        {
-            request = new Request() { };
-            var review = await _context.Request.ToListAsync();
+        { //request.Status = request.Total <= 50 ? "APPROVED": review;
             if(request == null)
             {
-                return NotFound();
+                return BadRequest();
             }
             if(request.Total <= 50)
             {
                 request.Status = "APPROVED";
-                return await PutRequest(request.Id, request);
             }
             else
             {
                 request.Status = "REVIEW";
-                return await PutRequest(request.Id, request);
             }
+            return await PutRequest(request.Id, request);
         }
 
         //set request to approve
         [HttpPut("approve")]
         public async Task<IActionResult> SetRequestToApprove(Request request)
         {
-            request = new Request() { };
             if(request == null)
             {
-                return NotFound();
+                return BadRequest();
             }
             request.Status = "APPROVED";
             return await PutRequest(request.Id, request);
@@ -139,10 +120,9 @@ namespace prs_server.Controllers
         [HttpPut("reject")]
         public async Task<IActionResult> SetRequestToRejected(Request request)
         {
-            request = new Request() { };
             if(request == null)
             {
-                return NotFound();
+                return BadRequest();
             }
             request.Status = "REJECTED";
             return await PutRequest(request.Id, request);
