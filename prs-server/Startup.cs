@@ -26,9 +26,15 @@ namespace prs_server
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            
+            var connStrKey = "PrsDbContextWinhost";
+#if DEBUG //add this so don't have to manually change conn string depending on where you're working (local/prod)
+            connStrKey = "PrsCapstoneDbContext";
+#endif
+
             services.AddDbContext<PrsCapstoneDbContext>(x =>
             {
-                x.UseSqlServer(Configuration.GetConnectionString("PrsCapstoneDbContext"));
+                x.UseSqlServer(Configuration.GetConnectionString(connStrKey));
 
             });
 
@@ -53,12 +59,6 @@ namespace prs_server
 
             app.UseRouting();
 
-            using var scope = app.ApplicationServices
-                    .GetRequiredService<IServiceScopeFactory>()
-                    .CreateScope();
-            scope.ServiceProvider
-                    .GetService<PrsCapstoneDbContext>()
-                    .Database.Migrate();
 
             app.UseAuthorization();
 
@@ -66,6 +66,13 @@ namespace prs_server
             {
                 endpoints.MapControllers();
             });
+
+            using var scope = app.ApplicationServices
+                    .GetRequiredService<IServiceScopeFactory>()
+                    .CreateScope();
+            scope.ServiceProvider
+                    .GetService<PrsCapstoneDbContext>()
+                    .Database.Migrate();
         }
     }
 }
