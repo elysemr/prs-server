@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace prs_server.Models
@@ -26,7 +27,7 @@ namespace prs_server.Models
         public string Phone { get; set; }
         [StringLength(255)]
         public string Email { get; set; }
-
+        [JsonIgnore]
         public virtual IEnumerable<Product> Products { get; set; }
         public Vendor () { }
     }

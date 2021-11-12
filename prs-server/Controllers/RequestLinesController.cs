@@ -31,7 +31,9 @@ namespace prs_server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<RequestLine>> GetRequestLine(int id)
         {
-            var requestLine = await _context.RequestLine.FindAsync(id);
+            var requestLine = await _context.RequestLine
+                .Include(x => x.Product)
+                .SingleOrDefaultAsync(x => x.Id == id);
 
             if (requestLine == null)
             {

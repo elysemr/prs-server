@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace prs_server.Models
@@ -23,7 +24,7 @@ namespace prs_server.Models
         public string PhotoPath { get; set; }
         public int VendorId { get; set; }
         public virtual Vendor Vendor { get; set; }
-
+        [JsonIgnore]
         public virtual IEnumerable<RequestLine> RequestLines { get; set; }
 
 

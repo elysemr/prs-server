@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace prs_server.Models
@@ -23,7 +24,7 @@ namespace prs_server.Models
         public string Email { get; set; }
         public bool IsReviewer { get; set; } = false;
         public bool IsAdmin { get; set; } = false;
-
+        [JsonIgnore]
         public virtual IEnumerable<Request> Requests { get; set; }
 
 
