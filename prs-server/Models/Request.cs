@@ -24,7 +24,7 @@ namespace prs_server.Models
         [Column(TypeName = "decimal(11,2)")]
         public decimal Total { get; set; } = 0;
         public int UserId { get; set; }
-        [JsonIgnore]
+  
         public virtual User User { get; set; }
         public virtual IEnumerable<RequestLine> RequestLines { get; set; }
 

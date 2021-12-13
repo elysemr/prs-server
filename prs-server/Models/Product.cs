@@ -25,7 +25,7 @@ namespace prs_server.Models
         public int VendorId { get; set; }
         public virtual Vendor Vendor { get; set; }
         [JsonIgnore]
-        public virtual IEnumerable<RequestLine> RequestLines { get; set; }
+        public virtual ICollection<RequestLine> RequestLines { get; set; }
 
 
 

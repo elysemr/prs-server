@@ -34,7 +34,7 @@ namespace prs_server.Controllers
             var request = await _context.Request.Include(x => x.User)
                                         .Include(x => x.RequestLines)
                                         .ThenInclude(xl => xl.Product)
-                                        .SingleOrDefaultAsync(x => x.Id == id); ;
+                                        .SingleOrDefaultAsync(x => x.Id == id); 
 
             if (request == null)
             {
@@ -52,7 +52,7 @@ namespace prs_server.Controllers
             return await (from r in _context.Request
                           where r.Status == "REVIEW"
                           && r.UserId != userId
-                          select r).ToListAsync();
+                          select r).Include(x => x.User).ToListAsync();
 
         }
 

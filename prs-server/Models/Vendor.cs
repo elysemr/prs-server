@@ -28,7 +28,7 @@ namespace prs_server.Models
         [StringLength(255)]
         public string Email { get; set; }
         [JsonIgnore]
-        public virtual IEnumerable<Product> Products { get; set; }
+        public virtual ICollection<Product> Products { get; set; }
         public Vendor () { }
     }
 }
